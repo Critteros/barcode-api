@@ -1,12 +1,13 @@
 import datetime
 from typing import AsyncGenerator
+from functools import cache
 
 from pydantic import UUID4
 from sqlalchemy import TIMESTAMP, UUID, func, text
 from sqlalchemy.ext.asyncio import AsyncAttrs, AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
-from barcode_api.config.settings import settings
+from barcode_api.config.settings import get_database_url
 
 
 class Base(AsyncAttrs, DeclarativeBase):
@@ -95,21 +96,24 @@ class CreatedAtUpdatedAtMixin:
     )
 
 
-engine = create_async_engine(
-    str(settings.SQLALCHEMY_DATABASE_URI),
-    future=True,
-    echo=False,
-    pool_size=10,
-    max_overflow=10,
-    isolation_level="SERIALIZABLE",
-)
+@cache
+def get_sessionmaker():
+    engine = create_async_engine(
+        get_database_url(),
+        future=True,
+        echo=False,
+        pool_size=10,
+        max_overflow=10,
+        isolation_level="SERIALIZABLE",
+    )
 
+    AsyncDBSession = async_sessionmaker(
+        bind=engine,
+        expire_on_commit=False,
+        class_=AsyncSession,
+    )
 
-AsyncDBSession = async_sessionmaker(
-    bind=engine,
-    expire_on_commit=False,
-    class_=AsyncSession,
-)
+    return AsyncDBSession
 
 
 async def db_session() -> AsyncGenerator[AsyncSession, None]:
@@ -122,5 +126,6 @@ async def db_session() -> AsyncGenerator[AsyncSession, None]:
     Example:
         Depends(db_session)
     """
+    AsyncDBSession = get_sessionmaker()
     async with AsyncDBSession() as session:
         yield session

@@ -1,15 +1,15 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools", "wheel"] # PEP 517
+requires = ["setuptools", "wheel"]      # PEP 517
 
 [project]
 authors = [
-  {name = "Szymon Kozioł", email = "szymonkoz@student.agh.edu.pl"},
-  {name = "Inatsi Yermakovich"},
-  {name = "Karolina Klimek"},
-  {name = "Mateusz Lewandowski"},
-  {name = "Patryk Sokoliński"},
-  {name = "Błazej Czaicki"},
+  { name = "Szymon Kozioł", email = "szymonkoz@student.agh.edu.pl" },
+  { name = "Inatsi Yermakovich" },
+  { name = "Karolina Klimek" },
+  { name = "Mateusz Lewandowski" },
+  { name = "Patryk Sokoliński" },
+  { name = "Błazej Czaicki" },
 ]
 dependencies = [
   "fastapi",
@@ -22,14 +22,15 @@ dependencies = [
   "alembic",
   "python-dotenv",
   "psycopg",
+  "testcontainers",
   "python-multipart",
   "fastapi-oidc@git+https://github.com/Critteros/fastapi-oidc@feat_allow_passing_jwt_decode_options",
   "python-barcode",
-  "beautifulsoup4", # Scraping dependencies
+  "beautifulsoup4",                                                                                   # Scraping dependencies
   "pyppeteer",
   "pyppeteer_stealth",
   "httpx",
-  "python-magic"
+  "python-magic",
 ]
 name = "barcode_api"
 readme = "README.md"
@@ -56,7 +57,7 @@ dev = [
   "numpy",
   "types-python-jose",
   "jose",
-  "Faker"
+  "Faker",
 ]
 
 [tool.ruff]
@@ -76,30 +77,30 @@ exclude = ["build", "dist", "venv", "env", "node_modP>ules"]
 
 [tool.pytest.ini_options]
 env = [
-    "POSTGRES_SERVER=127.0.0.1:5432",
-    "POSTGRES_DB=test",
-    "POSTGRES_USER=postgres",
-    "POSTGRES_PASSWORD=postgres",
-    "OIDC_CLIENT_ID=barcode-api",
-    "OIDC_BASE_AUTHORIZATION_SERVER_URI=http://example.com",
-    "OIDC_ISSUER=http://example.com/identity",
-    "OIDC_SIGNATURE_CACHE_TTL=3600",
+  "POSTGRES_SERVER=127.0.0.1:5432",
+  "POSTGRES_DB=test",
+  "POSTGRES_USER=postgres",
+  "POSTGRES_PASSWORD=postgres",
+  "OIDC_CLIENT_ID=barcode-api",
+  "OIDC_BASE_AUTHORIZATION_SERVER_URI=http://example.com",
+  "OIDC_ISSUER=http://example.com/identity",
+  "OIDC_SIGNATURE_CACHE_TTL=3600",
 ]
 
 [tool.coverage]
-    [tool.coverage.run]
-    omit = [
-        # omit anything in a .local directory anywhere
-        '*/.local/*',
-        '__init__.py',
-        'tests/*',
-        '*/tests/*',
-        # omit anything in a .venv directory anywhere
-        '.venv/*',
-        # Ignore alembic migrations
-        'alembic/*',
-    ]
-    branch = true
+[tool.coverage.run]
+omit = [
+  # omit anything in a .local directory anywhere
+  '*/.local/*',
+  '__init__.py',
+  'tests/*',
+  '*/tests/*',
+  # omit anything in a .venv directory anywhere
+  '.venv/*',
+  # Ignore alembic migrations
+  'alembic/*',
+]
+branch = true
 
-    [tool.coverage.report]
-    skip_empty = true
+[tool.coverage.report]
+skip_empty = true

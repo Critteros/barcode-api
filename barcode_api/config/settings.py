@@ -49,3 +49,7 @@ class _Settings(BaseSettings):
 
 # Also why is mypy complaining about this? It works fine.
 settings = _Settings()  # type: ignore
+
+
+def get_database_url() -> str:
+    return str(settings.SQLALCHEMY_DATABASE_URI)
