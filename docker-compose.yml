@@ -26,3 +26,14 @@ services:
       - OIDC_SIGNATURE_CACHE_TTL=${OIDC_SIGNATURE_CACHE_TTL:?err}
       # Image specific environment variables
       - BROWSER_PATH=/usr/bin/chromium
+
+  db:
+    image: postgres:16-alpine
+    container_name: barcode-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:?err}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?err}
+      - POSTGRES_DB=${POSTGRES_DB:?err}
+    ports:
+      - 5432:5432
